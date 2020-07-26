@@ -64,7 +64,7 @@ html,body {
 
 .info a:hover{
     background-color: grey;
-    
+    opacity: 0.825
  }
 
 
@@ -116,6 +116,7 @@ html,body {
 
 .artists a:hover {
     background-color: grey;
+    opacity: 0.825
 }
 
 
