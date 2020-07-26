@@ -29,7 +29,7 @@ const merch = [
 
     },
 ];
-
+/*
 const products = [
     {
         name: "Toronto Show Ticket",
@@ -74,6 +74,7 @@ const products = [
     },
 
 ];
+*/
 
 for (let i=0; i <cartBtn.length; i++) {
   cartBtn[i].addEventListener('click', () => {
@@ -127,25 +128,20 @@ function merchInfo(merch) {
 
 
     if (merchInsideCart != null) {
-        
 
         { 
             newMerchVariable = [...merchInsideCart[merch.tag]]; 
             let sizingFlag = true
 
             for (let i=0; i <newMerchVariable.length; i++) {
-                console.log(merchInsideCart[merch.tag][i].sizing);
+    
                 if (newMerchVariable[i].sizing == merch.sizing) {
                     
                     merchInsideCart[merch.tag][i].numberInCart += 1
 
                     sizingFlag = false
                    break;
-                   
-
-
                 } 
-
             }
 
             if (sizingFlag) {
@@ -161,22 +157,12 @@ function merchInfo(merch) {
     else {
             
         merch.numberInCart = 1;
-
-
         newCart = {
         [merch.tag]: [merch],
        }
     }
-
-
-
     localStorage.setItem("productsInsideCart", JSON.stringify(newCart));
 }
-// TEST CONTAINER
-
-
-
-//  TEST CONTAINER
 
 // need to add in a local storage that saves the numberInCart 
 
@@ -221,14 +207,19 @@ function displayCart() {
 
           
            productContainer.innerHTML += `
-           <div class = "product">
-             <img src = "${merch[i].tag}.png">
-             <span>${merch[i].name}</span>
+           <div class = "newCartProduct">
+                <ion-icon name="close-circle"></ion-icon>
+                <img src = "${merch[i].tag}.png">
+                <span>${merch[i].name}</span>
            </div>
-           <div class = "cartSize">${merch[i].sizing}</div>
+           <div class = "size">${merch[i].sizing}</div>
            <div class = "price"> $${merch[i].price}</div>
-           <div class = "cartQuantity"> ${merch[i].numberInCart}</div>
-           <div class = "cartTotal"> $${merch[i].numberInCart * merch[i].price}</div>
+           <div class = "quantity"> 
+                <ion-icon class="decrease" name="arrow-dropleft-circle"></ion-icon>
+                <span>${merch[i].numberInCart}</span>
+                <ion-icon class="increase" name="arrow-dropright-circle"></ion-icon>
+           </div>
+           <div class = "total"> $${merch[i].numberInCart * merch[i].price}</div>
            `
           }
        });
