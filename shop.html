@@ -4,10 +4,18 @@
         <title> PTE | Shop </title>
         <meta name="Shop" content="This is the shop">
         <link rel="stylesheet" href="styles.css"/>
+        <script defer src="login.js"></script>
       </head>
       
     <header class="pic"> 
-      <div>
+      
+      <div class="javashit">
+        <ul>
+          <li><p data-login-target="#login" class= "login" >Login/Register  <img class ="logImg" src="login.png"></p></li>
+          <li><a href="./cart.html">Cart   (<span>0</span>)<img src="cart.png"></a></li>
+        </ul>
+      </div>
+
       <a href="./index.html">
             <img src="pte2.png" class="name"/>
        
@@ -20,13 +28,36 @@
               <li><a href="./ddub.html"><img src="DDUB2.png"/></a></li>
               <li><a href="./mannie.html"><img class="man" src="MANNI2.png"/></a></li>
               <li><a href="./sam.html"><img class="sam" src="SAM2.png"/></a></li>
-              <li><a href="./ze.html"><img src="Z2.png"/></a></li> 
             </ul>   
           </nav>
-      </div>    
+        
     </header>
 
     <body>
+
+      <div class ="form" id = "login">
+        <button data-close-button class="close-button">&times;</button>
+        <form class = "register-form">
+            
+            <input type="text" placeholder ="Enter Username"/> 
+            <input type="text" placeholder ="Enter Password"/>
+            <input type="text" placeholder ="Enter Email Address"/>
+            <button class= "dutton">Register</button>
+            <span class="message">Already Registered? <a href ="#">Login</a></span>
+        </form>
+  
+        <form class = "login-form">
+  
+            <input type="text" placeholder ="Username"/>
+            <input type="password" placeholder ="Password"/>
+            <button class="dutton">Login</button>
+            <span class="message">Not Registered? <a href ="#">Register</a></span>
+        </form>
+    </div>
+  
+  
+  <div id="overlay"></div>
+
 
       <div class="container">
         <div class="bazaar">
@@ -59,5 +90,18 @@
       </div>
         </div>
     </body>
+
+    <script src="cart.js"></script>
+
+<script src='https://code.jquery.com/jquery-3.5.1.min.js'></script>
+
+<script>
+    $('.message a').click(function (){
+    $('form').animate({height: "toggle", opacity: "toggle"}, "slow");
+    });
+</script>
+
+  <script src="index.js"></script>
+
     
 </html>
