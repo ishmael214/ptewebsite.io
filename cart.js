@@ -75,13 +75,13 @@ const products = [
 
 ];
 */
+if (cartBtn.length != 0) {
+	let productId = parseInt(cartBtn[0].id);
 
-for (let i=0; i <cartBtn.length; i++) {
-  cartBtn[i].addEventListener('click', () => {
-    getNumberOfItemsInCart(merch[i]);
-    totalCartPrice(merch[i]);
-    
-  })
+    cartBtn[0].addEventListener('click', () => {
+        getNumberOfItemsInCart(merch[productId]);
+        totalCartPrice(merch[productId]);
+    })    
 }
 
 // this function is what keeps or saves the amount of items in cart even after refresh
@@ -115,55 +115,78 @@ function getNumberOfItemsInCart(merch) {
 
 // this function gives you the information of WHAT you're putting into the cart
 function merchInfo(merch) {
-    let merchInsideCart = localStorage.getItem("productsInsideCart");
-    merchInsideCart = JSON.parse(merchInsideCart);
+    let merchInsideCartArray = localStorage.getItem("productsInsideCart");
+    merchInsideCartArray = JSON.parse(merchInsideCartArray);
     let shirtSize = document.getElementById("shirtSize").value;
     merch.sizing = shirtSize
 
-    let newCart = {
-        ...merchInsideCart
+    let newCart =  merchInsideCartArray;
+       
+
+    if (merchInsideCartArray != null) { 
+      	
+      let itemExists = false;
+      
+      // Check if product exists in array. If it does then we increment the number in cart
+      for ( const merchItem of merchInsideCartArray) {
+          if (merchItem.tag === merch.tag ) {
+              merchItem.numberInCart += 1; 
+              itemExists = true;
+          }       
+      }
+   
+      // If it does NOT, then we just add it to the cart. Push to the array. Don't update the object in the array
+      if (itemExists){
+       	/// if item exists 
         
-    }
+      }
+      else {
+        // if item doesn't exist
+        let tempItem = merch;
+        tempItem.numberInCart = 1;
+        merchInsideCartArray.push(tempItem);
+      }
+        
+     
+      
+        
+	
+     	// if hoodie not in cart
+		      
+      
+      
+      
+        /*newMerchVariable = [...merchInsideCart[merch.tag]]; 
+        let sizingFlag = true
 
+        for (let i=0; i <newMerchVariable.length; i++) {
 
+          if (newMerchVariable[i].sizing == merch.sizing) {
 
-    if (merchInsideCart != null) {
+            merchInsideCart[merch.tag][i].numberInCart += 1
 
-        { 
-            newMerchVariable = [...merchInsideCart[merch.tag]]; 
-            let sizingFlag = true
+            sizingFlag = false
+            break;
+          } 
+        }
 
-            for (let i=0; i <newMerchVariable.length; i++) {
-    
-                if (newMerchVariable[i].sizing == merch.sizing) {
-                    
-                    merchInsideCart[merch.tag][i].numberInCart += 1
-
-                    sizingFlag = false
-                   break;
-                } 
-            }
-
-            if (sizingFlag) {
-                newCart = {
-                    ...merchInsideCart,                  
-                    [merch.tag]: [...merchInsideCart[merch.tag],merch],
-                }
-                console.log(newCart);
-            }
-        }         
+        if (sizingFlag) {
+          newCart = {
+            ...merchInsideCart,                  
+            [merch.tag]: [...merchInsideCart[merch.tag],merch],
+          }
+          console.log(newCart);
+        } */     
     } 
     
     else {
             
         merch.numberInCart = 1;
-        newCart = {
-        [merch.tag]: [merch],
-       }
+        newCart = [merch];
+       
     }
     localStorage.setItem("productsInsideCart", JSON.stringify(newCart));
 }
-
 // need to add in a local storage that saves the numberInCart 
 
 
@@ -186,52 +209,34 @@ function totalCartPrice(merch) {
 
 // this function finne show everything in the cart on the cart page 
 function displayCart() {
-     let merchInsideCart = localStorage.getItem("productsInsideCart");
-     merchInsideCart = JSON.parse(merchInsideCart);
+    let merchInsideCartArray = localStorage.getItem("productsInsideCart");
+    merchInsideCartArray = JSON.parse(merchInsideCartArray);
      
-     // test
-
-     // test end
-     let productContainer = document.querySelector(".cart-products");
-     
-     let cart = localStorage.getItem('totalCartPrice');
-     cart = parseInt(cart);
-     
-     if ( merchInsideCart && productContainer ) {
-       productContainer.innerHTML = '';
-       Object.values(merchInsideCart).map(merch => {
-          for (let i=0; i <merch.length; i++) {
-
-
-
-
-          
-           productContainer.innerHTML += `
-           <div class = "newCartProduct">
-                <ion-icon name="close-circle"></ion-icon>
-                <img src = "${merch[i].tag}.png">
-                <span>${merch[i].name}</span>
-           </div>
-           <div class = "size">${merch[i].sizing}</div>
-           <div class = "price"> $${merch[i].price}</div>
-           <div class = "quantity"> 
-                <ion-icon class="decrease" name="arrow-dropleft-circle"></ion-icon>
-                <span>${merch[i].numberInCart}</span>
-                <ion-icon class="increase" name="arrow-dropright-circle"></ion-icon>
-           </div>
-           <div class = "total"> $${merch[i].numberInCart * merch[i].price}</div>
-           `
-          }
-       });
-
+     for (const merchInsideCart of merchInsideCartArray){
+       let productContainer = document.querySelector(".cart-products");
+       let cart = localStorage.getItem('totalCartPrice');
+       cart = parseInt(cart);
+    
+    if ( merchInsideCart && productContainer != null ) {
        productContainer.innerHTML += `
-       <div class="basketTotalContainer">
-           <h4 class="basketTotalTitle">Subtotal</h4>
-           <h4 class="basketTotal">$${cart}.00</h4>
-       </div>`
-
-
-     }
+          <div class = "product">
+            <img src = "${merchInsideCart.tag}.png">
+            <span>${merchInsideCart.name}</span>
+          </div>
+          <div class = "cartSize">${merchInsideCart.sizing}</div>
+          <div class = "price"> $${merchInsideCart.price}</div>
+          <div class = "cartQuantity"> ${merchInsideCart.numberInCart}</div>
+          <div class = "cartTotal"> $${merchInsideCart.numberInCart * merchInsideCart.price}</div>
+          `
+       productContainer.innerHTML += `
+      <div class="basketTotalContainer">
+          <h4 class="basketTotalTitle">Subtotal</h4>
+          <h4 class="basketTotal">$${cart}.00</h4>
+      </div>`
+       
+       
+       }
+   }
 }
 
 
