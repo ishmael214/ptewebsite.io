@@ -126,19 +126,38 @@ function merchInfo(merch) {
     if (merchInsideCartArray != null) { 
       	
       let itemExists = false;
-      
+
+      // what i wanna do is loop the sizing thru and if there isn't the same size then push thru the new merch item into array
+     /* 
+      for (const merchItem of merchInsideCartArray) {
+          if (merchItem.sizing === merch.sizing) {
+              itemExists = true;
+              merchItem.numberInCart += 1;
+          } 
+      }
+
+      if (itemExists) {
+
+      } else {
+          let tempItem = merch;
+          console.log(tempItem);
+          tempItem.numberInCart = 1;
+          merchInsideCartArray.push(tempItem);
+      }
+      */
       // Check if product exists in array. If it does then we increment the number in cart
       for ( const merchItem of merchInsideCartArray) {
-          if (merchItem.tag === merch.tag ) {
+          if (merchItem.tag === merch.tag && merchItem.sizing === merch.sizing) {
               merchItem.numberInCart += 1; 
               itemExists = true;
-          }       
-      }
-   
+          } /* else if  (merchItem.sizing === merch.sizing) {
+            itemExists = true;
+            merchItem.numberInCart += 1;
+        } */     
+      }   
       // If it does NOT, then we just add it to the cart. Push to the array. Don't update the object in the array
       if (itemExists){
        	/// if item exists 
-        
       }
       else {
         // if item doesn't exist
@@ -146,44 +165,10 @@ function merchInfo(merch) {
         tempItem.numberInCart = 1;
         merchInsideCartArray.push(tempItem);
       }
-        
-     
-      
-        
-	
-     	// if hoodie not in cart
-		      
-      
-      
-      
-        /*newMerchVariable = [...merchInsideCart[merch.tag]]; 
-        let sizingFlag = true
-
-        for (let i=0; i <newMerchVariable.length; i++) {
-
-          if (newMerchVariable[i].sizing == merch.sizing) {
-
-            merchInsideCart[merch.tag][i].numberInCart += 1
-
-            sizingFlag = false
-            break;
-          } 
-        }
-
-        if (sizingFlag) {
-          newCart = {
-            ...merchInsideCart,                  
-            [merch.tag]: [...merchInsideCart[merch.tag],merch],
-          }
-          console.log(newCart);
-        } */     
-    } 
-    
-    else {
-            
+    }  
+    else {          
         merch.numberInCart = 1;
-        newCart = [merch];
-       
+        newCart = [merch];   
     }
     localStorage.setItem("productsInsideCart", JSON.stringify(newCart));
 }
@@ -214,25 +199,29 @@ function displayCart() {
      
      for (const merchInsideCart of merchInsideCartArray){
        let productContainer = document.querySelector(".cart-products");
+       let basketTotal = document.querySelector(".basketTotal");
        let cart = localStorage.getItem('totalCartPrice');
        cart = parseInt(cart);
     
     if ( merchInsideCart && productContainer != null ) {
        productContainer.innerHTML += `
-          <div class = "product">
+          <div class = "newCartProduct">
+            <ion-icon name="close-circle"></ion-icon>
             <img src = "${merchInsideCart.tag}.png">
             <span>${merchInsideCart.name}</span>
           </div>
-          <div class = "cartSize">${merchInsideCart.sizing}</div>
+          <div class = "size">${merchInsideCart.sizing}</div>
           <div class = "price"> $${merchInsideCart.price}</div>
-          <div class = "cartQuantity"> ${merchInsideCart.numberInCart}</div>
-          <div class = "cartTotal"> $${merchInsideCart.numberInCart * merchInsideCart.price}</div>
+          <div class = "quantity"> 
+                <ion-icon class="decrease" name="arrow-dropleft-circle"></ion-icon>
+                    ${merchInsideCart.numberInCart}
+                <ion-icon class="increase" name="arrow-dropright-circle"></ion-icon>
+          </div>
+          <div class = "total"> $${merchInsideCart.numberInCart * merchInsideCart.price}</div>
           `
-       productContainer.innerHTML += `
-      <div class="basketTotalContainer">
-          <h4 class="basketTotalTitle">Subtotal</h4>
-          <h4 class="basketTotal">$${cart}.00</h4>
-      </div>`
+   
+        
+        basketTotal.innerHTML = `$${cart}.00`
        
        
        }
