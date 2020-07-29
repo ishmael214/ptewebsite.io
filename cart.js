@@ -3,7 +3,7 @@ const cartBtn = document.querySelectorAll('.addToCart');
 
 const merch = [
     {
-        name: "BFB T-Shirt",
+        name: "BFB T Shirt",
         tag: "bfbtshirt",
         price: 24.00,
         numberInCart: 0,
@@ -94,13 +94,19 @@ function saveCartItems () {
     
 }
 
-function getNumberOfItemsInCart(merch) {
+function getNumberOfItemsInCart(merch, action) {
     
     let AmountOfItemsInCart = localStorage.getItem('getNumberOfItemsInCart');
     AmountOfItemsInCart = parseInt(AmountOfItemsInCart);
 
+    
 
-    if (AmountOfItemsInCart) {
+    if (action === "decrease") {
+        localStorage.setItem ('getNumberOfItemsInCart', AmountOfItemsInCart - 1);
+        document.querySelector('.javashit span').textContent = AmountOfItemsInCart - 1;
+    }
+
+    else if ( AmountOfItemsInCart ) {
         localStorage.setItem('getNumberOfItemsInCart', AmountOfItemsInCart + 1);
         document.querySelector('.javashit span').textContent = AmountOfItemsInCart + 1;
     } else {
@@ -115,6 +121,8 @@ function getNumberOfItemsInCart(merch) {
 
 // this function gives you the information of WHAT you're putting into the cart
 function merchInfo(merch) {
+
+    // check back here
     let merchInsideCartArray = localStorage.getItem("productsInsideCart");
     merchInsideCartArray = JSON.parse(merchInsideCartArray);
     let shirtSize = document.getElementById("shirtSize").value;
@@ -128,23 +136,7 @@ function merchInfo(merch) {
       let itemExists = false;
 
       // what i wanna do is loop the sizing thru and if there isn't the same size then push thru the new merch item into array
-     /* 
-      for (const merchItem of merchInsideCartArray) {
-          if (merchItem.sizing === merch.sizing) {
-              itemExists = true;
-              merchItem.numberInCart += 1;
-          } 
-      }
 
-      if (itemExists) {
-
-      } else {
-          let tempItem = merch;
-          console.log(tempItem);
-          tempItem.numberInCart = 1;
-          merchInsideCartArray.push(tempItem);
-      }
-      */
       // Check if product exists in array. If it does then we increment the number in cart
       for ( const merchItem of merchInsideCartArray) {
           if (merchItem.tag === merch.tag && merchItem.sizing === merch.sizing) {
@@ -175,22 +167,26 @@ function merchInfo(merch) {
 // need to add in a local storage that saves the numberInCart 
 
 
-function totalCartPrice(merch) {
+function totalCartPrice(merch, action) {
     
       let cartPrice = localStorage.getItem('totalCartPrice');
       
-
-      if(cartPrice != null) {
+      if (action) {
+        cartPrice = parseInt(cartPrice);
+        localStorage.setItem("totalCost", cart - product.price)
+      }
+      // original = if (cartPrice != null)
+      else if (cartPrice != null) {
           cartPrice = parseInt(cartPrice);
           localStorage.setItem("totalCartPrice", cartPrice + merch.price);
 
       } else {
         localStorage.setItem("totalCartPrice", merch.price);
 
-      }
+      } 
 
+    }
 
-}
 
 // this function finne show everything in the cart on the cart page 
 function displayCart() {
@@ -214,7 +210,7 @@ function displayCart() {
           <div class = "price"> $${merchInsideCart.price}</div>
           <div class = "quantity"> 
                 <ion-icon class="decrease" name="arrow-dropleft-circle"></ion-icon>
-                    ${merchInsideCart.numberInCart}
+                    <span>${merchInsideCart.numberInCart}</span>
                 <ion-icon class="increase" name="arrow-dropright-circle"></ion-icon>
           </div>
           <div class = "total"> $${merchInsideCart.numberInCart * merchInsideCart.price}</div>
@@ -222,11 +218,76 @@ function displayCart() {
    
         
         basketTotal.innerHTML = `$${cart}.00`
+
+        // deleteButtons();
+        manageQuantity();
        
        
-       }
+     }
    }
 }
+
+
+const manageQuantity = () => {
+    let decreaseButtons, increaseButtons, currentQuantity, currentProduct;
+    decreaseButtons = document.querySelectorAll(".decrease");
+    increaseButtons = document.querySelectorAll(".increase");
+    currentQuantity = 0;
+    
+    let merchInsideCartArray = localStorage.getItem("productsInsideCart");
+    merchInsideCartArray = JSON.parse(merchInsideCartArray);
+    console.log(merchInsideCartArray);
+    console.log(typeof merchInsideCartArray);
+
+
+    for(let i=0; i < decreaseButtons.length; i++) {
+        decreaseButtons[i].addEventListener('click', () => {
+            
+            currentQuantity = decreaseButtons[i].parentElement.querySelector('span').textContent;
+          //  console.log(currentQuantity)
+            currentProduct = decreaseButtons[i].parentElement.previousElementSibling.previousElementSibling.previousElementSibling.querySelector('span').textContent.toLocaleLowerCase().replace(/ /g,'').trim();
+         //   console.log(typeof merchInsideCartArray);
+         //   console.log(merchInsideCartArray[currentProduct]);
+
+           // for (let x = 0; x < merchInsideCartArray.length; x++)
+            for (const x of merchInsideCartArray ) {
+                
+                
+              //  console.log(x.numberInCart + x.tag);
+             //   console.log(x);
+
+               
+                
+                
+            }
+
+         /*   if( merchInsideCartArray.currentProduct.numberInCart > 1 ) {
+                merchInsideCartArray.currentProduct.numberInCart -= 1;
+                getNumberOfItemsInCart(merchInsideCartArray.currentProduct, "decrease");
+                totalCartPrice(merchInsideCartArray.currentProduct, "decrease");
+                localStorage.setItem('productsInsideCart', JSON.stringify(merchInsideCartArray));
+                displayCart();
+            } */
+        }
+        ); 
+
+    /*   increaseButtons[i].addEventListener('click', () => {
+            
+            currentQuantity = increaseButtons[i].parentElement.querySelector('span').textContent;
+
+            currentProduct = increaseButtons[i].parentElement.previousElementSibling.previousElementSibling.querySelector('span').textContent.toLocaleLowerCase().replace(/ /g,'').trim();
+
+                merchInsideCartArray[currentProduct].numberinCart += 1;
+                getNumberOfItemsInCart(merchInsideCartArray[currentProduct], "increase");
+                totalCartPrice(merchInsideCartArray[currentProduct], "increase");
+                localStorage.setItem('productsInsideCart', JSON.stringify(merchInsideCartArray));
+                displayCart();
+            
+        }); */
+    }
+}
+
+
 
 
 saveCartItems();
