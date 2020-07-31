@@ -212,17 +212,32 @@ function displayCart() {
                 <ion-icon class="increase" name="arrow-dropright-circle"></ion-icon>
           </div>
           <div class = "total"> $${merchInsideCart.numberInCart * merchInsideCart.price}</div>
-          `
+          ` 
    
         
         basketTotal.innerHTML = `$${cart}.00`
+
+
+        // manageQuantity();
+       deleteButtons();
        
-        manageQuantity();
-       
+       } else {
+        productContainer.innerHTML = 
+        `
+           <div class = "newCartProduct">
+             
+           </div>
+           <div class = "size"></div>
+           <div class = "price"> </div>
+           <div class = "quantity"> </div>
+           <div class = "total"></div>
+        ` 
+        basketTotal.innerHTML = `$${cart}.00`
        }
+       
    }
 }
-
+/*
 const manageQuantity = () => {
     let decreaseButtons, increaseButtons, currentQuantity, currentProduct;
     decreaseButtons = document.querySelectorAll(".decrease");
@@ -231,8 +246,8 @@ const manageQuantity = () => {
     
     let merchInsideCartArray = localStorage.getItem("productsInsideCart");
     merchInsideCartArray = JSON.parse(merchInsideCartArray);
-    console.log(merchInsideCartArray);
-    console.log(typeof merchInsideCartArray);
+    // console.log(merchInsideCartArray);
+  //  console.log(typeof merchInsideCartArray);
   
   
     for(let i=0; i < decreaseButtons.length; i++) {
@@ -254,17 +269,17 @@ const manageQuantity = () => {
              }
             }
   
-         /*   if( merchInsideCartArray.currentProduct.numberInCart > 1 ) {
+            if( merchInsideCartArray.currentProduct.numberInCart > 1 ) {
                 merchInsideCartArray.currentProduct.numberInCart -= 1;
                 getNumberOfItemsInCart(merchInsideCartArray.currentProduct, "decrease");
                 totalCartPrice(merchInsideCartArray.currentProduct, "decrease");
                 localStorage.setItem('productsInsideCart', JSON.stringify(merchInsideCartArray));
                 displayCart();
-            } */
+            } 
         }
         ); 
   
-    /*   increaseButtons[i].addEventListener('click', () => {
+       increaseButtons[i].addEventListener('click', () => {
             
             currentQuantity = increaseButtons[i].parentElement.querySelector('span').textContent;
             currentProduct = increaseButtons[i].parentElement.previousElementSibling.previousElementSibling.querySelector('span').textContent.toLocaleLowerCase().replace(/ /g,'').trim();
@@ -274,10 +289,64 @@ const manageQuantity = () => {
                 localStorage.setItem('productsInsideCart', JSON.stringify(merchInsideCartArray));
                 displayCart();
             
-        }); */
+        }); 
     }
   }
   
+  */
+  
+  const deleteButtons = () => {
+      let deletebutton, cartPrice, amountInCart, merchInsideCartArray, productName, productContainer, basketTotal;  
+      productContainer = document.querySelector(".cart-products");
+      basketTotal = document.querySelector(".basketTotal");
+      deletebutton = document.querySelectorAll(".newCartProduct ion-icon");
+      console.log(deletebutton);
+      cartPrice = localStorage.getItem("totalCartPrice");
+      amountInCart = localStorage.getItem("getNumberOfItemsInCart");
+      merchInsideCartArray = localStorage.getItem("productsInsideCart");
+      merchInsideCartArray = JSON.parse(merchInsideCartArray);
+
+      for (let i=0; i < deletebutton.length; i++) {
+        deletebutton[i].addEventListener('click', () => {
+        productName = deletebutton[i].parentElement.querySelector('span').textContent.toLocaleLowerCase().replace(/ /g,'').trim();
+
+        for (const x of merchInsideCartArray) {
+            if (x.tag === productName) {
+
+            localStorage.setItem("getNumberOfItemsInCart", amountInCart - x.numberInCart);
+            cartPrice = localStorage.setItem("totalCartPrice", cartPrice - (x.price * x.numberInCart));
+            
+            delete x.name
+            delete x.tag
+            delete x.price
+            delete x.numberInCart
+            delete x.sizing
+           saveCartItems();
+            console.log(x);
+            console.log(merchInsideCartArray);
+
+            localStorage.setItem('productsInsideCart', JSON.stringify(merchInsideCartArray));
+
+
+                productContainer.innerHTML = 
+                `
+                   <div class = "newCartProduct">
+                     
+                   </div>
+                   <div class = "size"></div>
+                   <div class = "price"> </div>
+                   <div class = "quantity"> </div>
+                   <div class = "total"></div>
+                ` 
+                basketTotal.innerHTML = `$${cartPrice}.00`
+            
+            }
+        }
+        
+            
+      });
+    } 
+  }
   
   
   
