@@ -873,3 +873,10 @@ html,body {
 .basketTotal {
     width: 10%;
 }
+
+.cart-products ion-icon {
+    font-size: 18px;
+    margin-left: 5px;
+    margin-right: 5px;
+    cursor: pointer;
+}

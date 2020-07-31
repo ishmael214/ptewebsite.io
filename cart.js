@@ -3,7 +3,7 @@ const cartBtn = document.querySelectorAll('.addToCart');
 
 const merch = [
     {
-        name: "BFB T-Shirt",
+        name: "BFB T Shirt",
         tag: "bfbtshirt",
         price: 24.00,
         numberInCart: 0,
@@ -37,42 +37,36 @@ const products = [
         price: 20.00,
         numberInCart: 0
     },
-
     {
         name: "New York Show Ticket",
         tag: "ny-ticket",
         price: 20.00,
         numberInCart: 0
     },
-
     {
         name: "LA Show Ticket",
         tag: "la-ticket",
         price: 20.00,
         numberInCart: 0
     },
-
     {
         name: "Dallas Show Ticket",
         tag: "dallas-ticket",
         price: 20.00,
         numberInCart: 0
     },
-
     {
         name: "Houston Show Ticket",
         tag: "houston-ticket",
         price: 20.00,
         numberInCart: 0
     },
-
     {
         name: "Atlanta Show Ticket",
         tag: "atlanta-ticket",
         price: 20.00,
         numberInCart: 0
     },
-
 ];
 */
 if (cartBtn.length != 0) {
@@ -135,9 +129,7 @@ function merchInfo(merch) {
               merchItem.numberInCart += 1;
           } 
       }
-
       if (itemExists) {
-
       } else {
           let tempItem = merch;
           console.log(tempItem);
@@ -214,7 +206,7 @@ function displayCart() {
           <div class = "price"> $${merchInsideCart.price}</div>
           <div class = "quantity"> 
                 <ion-icon class="decrease" name="arrow-dropleft-circle"></ion-icon>
-                    ${merchInsideCart.numberInCart}
+                    <span>${merchInsideCart.numberInCart}</span>
                 <ion-icon class="increase" name="arrow-dropright-circle"></ion-icon>
           </div>
           <div class = "total"> $${merchInsideCart.numberInCart * merchInsideCart.price}</div>
@@ -223,11 +215,69 @@ function displayCart() {
         
         basketTotal.innerHTML = `$${cart}.00`
        
+        manageQuantity();
        
        }
    }
 }
 
-
-saveCartItems();
-displayCart();
+const manageQuantity = () => {
+    let decreaseButtons, increaseButtons, currentQuantity, currentProduct;
+    decreaseButtons = document.querySelectorAll(".decrease");
+    increaseButtons = document.querySelectorAll(".increase");
+    currentQuantity = 0;
+    
+    let merchInsideCartArray = localStorage.getItem("productsInsideCart");
+    merchInsideCartArray = JSON.parse(merchInsideCartArray);
+    console.log(merchInsideCartArray);
+    console.log(typeof merchInsideCartArray);
+  
+  
+    for(let i=0; i < decreaseButtons.length; i++) {
+        decreaseButtons[i].addEventListener('click', () => {
+            
+            currentQuantity = decreaseButtons[i].parentElement.querySelector('span').textContent;
+         console.log(currentQuantity)
+              currentProduct = decreaseButtons[i].parentElement.previousElementSibling.previousElementSibling.previousElementSibling.querySelector('span').textContent.toLocaleLowerCase().replace(/ /g,'').trim();
+               console.log(currentProduct)
+            
+            for (const x of merchInsideCartArray) {
+           // for (let x = 0; x < merchInsideCartArray.length; x++)
+            if (x.tag === currentProduct && x.numberInCart > 1) {
+                x.numberInCart -= 1;
+                getNumberOfItemsInCart(x, "decrease");
+                totalCartPrice(x, "decrease");
+                localStorage.setItem('productsInsideCart', JSON.stringify(merchInsideCartArray));
+                displayCart();
+             }
+            }
+  
+         /*   if( merchInsideCartArray.currentProduct.numberInCart > 1 ) {
+                merchInsideCartArray.currentProduct.numberInCart -= 1;
+                getNumberOfItemsInCart(merchInsideCartArray.currentProduct, "decrease");
+                totalCartPrice(merchInsideCartArray.currentProduct, "decrease");
+                localStorage.setItem('productsInsideCart', JSON.stringify(merchInsideCartArray));
+                displayCart();
+            } */
+        }
+        ); 
+  
+    /*   increaseButtons[i].addEventListener('click', () => {
+            
+            currentQuantity = increaseButtons[i].parentElement.querySelector('span').textContent;
+            currentProduct = increaseButtons[i].parentElement.previousElementSibling.previousElementSibling.querySelector('span').textContent.toLocaleLowerCase().replace(/ /g,'').trim();
+                merchInsideCartArray[currentProduct].numberinCart += 1;
+                getNumberOfItemsInCart(merchInsideCartArray[currentProduct], "increase");
+                totalCartPrice(merchInsideCartArray[currentProduct], "increase");
+                localStorage.setItem('productsInsideCart', JSON.stringify(merchInsideCartArray));
+                displayCart();
+            
+        }); */
+    }
+  }
+  
+  
+  
+  
+  saveCartItems();
+  displayCart();
