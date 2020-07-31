@@ -1,4 +1,6 @@
 // cart section 
+
+// shirt value error checkpoint
 const cartBtn = document.querySelectorAll('.addToCart');
 
 const merch = [
