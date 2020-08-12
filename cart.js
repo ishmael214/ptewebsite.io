@@ -200,16 +200,16 @@ function displayCart() {
     if ( merchInsideCart && productContainer != null ) {
        productContainer.innerHTML += `
           <div class = "newCartProduct">
-            <ion-icon name="close-circle"></ion-icon>
+         <!--   <ion-icon name="close-circle"></ion-icon> -->
             <img src = "${merchInsideCart.tag}.png">
             <span>${merchInsideCart.name}</span>
           </div>
           <div class = "size">${merchInsideCart.sizing}</div>
           <div class = "price"> $${merchInsideCart.price}</div>
           <div class = "quantity"> 
-                <ion-icon class="decrease" name="arrow-dropleft-circle"></ion-icon>
+          <!--    <ion-icon class="decrease" name="arrow-dropleft-circle"></ion-icon>  -->
                     <span>${merchInsideCart.numberInCart}</span>
-                <ion-icon class="increase" name="arrow-dropright-circle"></ion-icon>
+          <!--     <ion-icon class="increase" name="arrow-dropright-circle"></ion-icon>  -->
           </div>
           <div class = "total"> $${merchInsideCart.numberInCart * merchInsideCart.price}</div>
           ` 
@@ -219,7 +219,7 @@ function displayCart() {
 
 
         // manageQuantity();
-       deleteButtons();
+      // deleteButtons();
        
        } else {
         productContainer.innerHTML = 

@@ -635,7 +635,8 @@ html,body {
 }
 
 .form button:hover,.form button:active{
-    background: lightblue;
+    background: black;
+    color: white;
 }
 
 .form .message {
