@@ -13,12 +13,12 @@ const pausePlay = () => {
   }
 }
 
-/*
+
 togglePause.addEventListener('click', (e) => {
   pausePlay();
-}) */
+}) 
 
-/*
+
 video.addEventListener('click', (e) => {
   pausePlay();
 }) 
@@ -33,7 +33,7 @@ toggleSound.addEventListener('click', (e) => {
   }
 })
 
-*/
+
 
 // PAUSE
 
